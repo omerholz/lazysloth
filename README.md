@@ -17,83 +17,49 @@ Replace `lazysloth` with the correct package name if published on PyPI or provid
 
 ## Quick Start
 
-Here's a quick example to get started with `lazysloth`:
+Here's a quick example to get started with `lazysloth`, demonstrating the lazy loading behavior:
 
 ```python
-from src.lazysloth import LazyVariable, ImmutableVariable
-
+from lazysloth import LazyVariable
 
 def expensive_computation():
-    # Simulate an expensive computation
+    print("Expensive computation is now being executed...")
     return {"data": 42}
 
-
-# Initialize a LazyVariable
+# Initialize a LazyVariable with the expensive computation.
 lazy_var = LazyVariable(expensive_computation)
 
-# Access the variable to trigger computation
-print(lazy_var.data)
+print("LazyVariable has been initialized.")
+print("Accessing the variable to trigger computation...")
 
-# Wrap a value in an ImmutableVariable
-immutable_var = ImmutableVariable({"key": "value"})
-
-# Attempting to modify the value will raise an error
-# immutable_var.key = "new value"  # Raises AttributeError
+# The expensive computation is executed only upon this access.
+print(lazy_var.data)  # Outputs: Expensive computation is now being executed... \n 42
 
 ```
 
+## Usage
 
+```python
+def expensive_operation():
+    print("Performing an expensive operation that takes time...")
+    return "Result of the operation"
 
-Python
+lazy_operation = LazyVariable(expensive_operation)
 
-Creating a comprehensive `README.md` for your `lazysloth` Python library involves outlining the purpose of the library, installation instructions, usage examples for `LazyVariable` and `ImmutableVariable`, and any additional information necessary for users to effectively utilize the library. Here's a structured template to get you started:
+print("LazyVariable initialized, but expensive operation hasn't run yet.")
+# At this point, the expensive operation has not been executed.
 
-------
+# Accessing the LazyVariable to trigger the expensive operation.
+result = lazy_operation()
+print(f"Operation result: {result}")
+# Now, the expensive operation is executed, and its result is accessed.
 
-# lazysloth: Lazy and Immutable Variable Library for Python
-
-`lazysloth` is a Python library designed to facilitate the use of lazy initialization patterns and immutable variables in Python applications. It provides two main functionalities through its `LazyVariable` and `ImmutableVariable` classes, allowing developers to defer expensive computations until absolutely necessary and to create variables that cannot be modified after initialization.
-
-## Installation
-
-```bash
-pip install lazysloth
 ```
-
-Replace `lazysloth` with the correct package name if published on PyPI or provide specific instructions if the library is to be installed directly from a source repository.
 
 ## Features
 
 - **LazyVariable:** Enables lazy initialization of variables, where the value is only computed upon the first access.
 - **ImmutableVariable:** Wraps values in an immutable container, preventing changes after initialization.
-
-## Quick Start
-
-Here's a quick example to get started with `lazysloth`:
-
-```python
-from src.lazysloth import LazyVariable, ImmutableVariable
-
-
-def expensive_computation():
-    # Simulate an expensive computation
-    return {"data": 42}
-
-
-# Initialize a LazyVariable
-lazy_var = LazyVariable(expensive_computation)
-
-# Access the variable to trigger computation
-print(lazy_var.data)
-
-# Wrap a value in an ImmutableVariable
-immutable_var = ImmutableVariable({"key": "value"})
-
-# Attempting to modify the value will raise an error
-# immutable_var.key = "new value"  # Raises AttributeError
-```
-
-## Usage
 
 ### LazyVariable
 
@@ -128,12 +94,6 @@ result = lazy_var(*args, **kwargs)
 ### ImmutableVariable
 
 `ImmutableVariable` ensures that the wrapped value cannot be modified after initialization. It's useful for creating read-only data structures.
-
-#### Initialization
-
-```python
-immutable_var = ImmutableVariable(value)
-```
 
 - `value`: The value to be made immutable.
 
