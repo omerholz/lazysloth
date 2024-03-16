@@ -2,6 +2,12 @@
 
 `lazysloth` is a Python library designed to facilitate the use of lazy initialization patterns and immutable variables in Python applications. It provides two main functionalities through its `LazyVariable` and `ImmutableVariable` classes, allowing developers to defer expensive computations until absolutely necessary and to create variables that cannot be modified after initialization.
 
+## Status
+
+### WIP
+
+Super early. At the time of writing this, this is not production-ready or anything close to that. This is a pet project I started 2 days ago. Hopefully, it will be production-ready in a few weeks.
+
 ## Why
 
 Too many things in Python evaluate at the time the code is loaded to memory, from global variables to the default values of function arguments. Sometimes, it's great; sometimes, it creates bugs that might be hard to find the first time or two before it's been burned into your experience. You can work around it with a slight refactor, which often involves wrapping some code in a function, a class, or a dictionary. I found myself writing these too many times in too many different projects, so I decided to write it once.
