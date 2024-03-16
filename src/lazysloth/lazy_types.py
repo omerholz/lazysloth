@@ -1,5 +1,5 @@
 from typing import Callable, Generic, TypeVar
-from src.lazysloth.immutable_types import ImmutableVariable
+from immutable_types import ImmutableVariable
 
 T = TypeVar('T')
 
