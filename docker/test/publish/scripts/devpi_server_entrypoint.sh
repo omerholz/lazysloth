@@ -2,6 +2,7 @@
 
 # Path to a file that indicates that the setup has already been done
 SETUP_DONE="/var/setup_done"
+CONTAINER_READY="/tmp/container_ready"
 
 # Start the server in the background
 start_server_background() {
@@ -31,10 +32,13 @@ if [ ! -f "$SETUP_DONE" ]; then
 
     # Indicate that setup has been done
     touch "$SETUP_DONE"
+    touch "$CONTAINER_READY"
 
     # Wait for the background server process to prevent the script from exiting
     # and turning the container off
     wait $SERVER_PID
 else
+    # Start the server normally
+    touch "$CONTAINER_READY"
     devpi-server --host 0.0.0.0
 fi
