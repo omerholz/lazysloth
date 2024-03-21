@@ -1,0 +1,58 @@
+services:
+  devpi:
+    build:
+        context: .
+        dockerfile: devpi-server.Dockerfile
+        args:
+          USER_NAME: testuser
+          USER_PASSWORD: test
+          USER_INDEX: dev
+    ports:
+      - "3141:3141"
+    environment:
+      - USER_NAME=testuser
+      - USER_PASSWD=test
+      - PORT=3141
+    healthcheck:
+      test: ["CMD", "sh", "-c", "/usr/local/bin/healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  uploader:
+    build:
+        context: ../../..
+        dockerfile: docker/test/publish/uploader.Dockerfile
+    depends_on:
+      devpi:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    environment:
+      - PYPISERVER_URL=http://devpi:3141/testuser/dev
+      - PYPISERVER_PROTOCOL=http
+      - PYPISERVER_HOST=devpi
+      - PYPISERVER_PORT=3141
+      - PYPISERVER_INDEX=testuser/dev
+      - PYPISERVER_USERNAME=testuser
+      - PYPISERVER_PASSWORD=test
+      - LAZYSLOTH_VERSION=998.999.999
+    healthcheck:
+      test: ["CMD", "sh", "-c", "/usr/local/bin/healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  importer:
+    build:
+      context: .
+      dockerfile: importer.Dockerfile
+    depends_on:
+      uploader:
+        condition: service_healthy
+    environment:
+      - PIP_TRUSTED_HOST=devpi
+      - PIP_INDEX_URL=http://testuser:test@devpi:3141/testuser/dev/+simple/
+      - LAZYSLOTH_VERSION=998.999.999
+    stdin_open: true
+    tty: true
